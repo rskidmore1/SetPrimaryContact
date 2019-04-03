@@ -1,0 +1,24 @@
+trigger SetPrimaryContact on Opportunity (before insert) {
+ for(Opportunity newOppt : Trigger.new){  
+
+
+ 
+             if (newOppt.Expected_Account_Type__c == '1099') { 
+                              //if (newOppt.Name != null) { 
+                              
+               //try {               
+
+               Account acct = [SELECT Name, Id  FROM Account WHERE Id =: newOppt.Salesforce_ID__c]; 
+               Contact cont = [SELECT Name, Id, AccountId  FROM Contact WHERE AccountId =: acct.Id ORDER BY CreatedDate ASC LIMIT 1]; 
+               newOppt.Primary_Contact__c = cont.Id; 
+               //} 
+                 
+                 //catch (System.NullPointerException e) {
+
+             // e = e; // can be assigned to a variable to display a user-friendly error message
+
+           // }
+             }
+     
+ }
+}
